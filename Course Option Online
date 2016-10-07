@@ -1,0 +1,51 @@
+import java.util.*;
+import java.io.*;
+
+//social network course option
+
+// PriorityQueue to sort the objects
+
+static class PQsort implements Comparator<Map.Entry<String,Integer>>{
+   public int compare(Map.Entry<String,Integer> a,Map.Entry<String,Integer> b){
+        return a.getValue()-b.getValue();
+   }
+}
+
+public static void courseList(String myName){
+   if(myName == null || myName.length()==0){
+         return;
+   }
+   // define a set of friends
+   HashSet<String> friends = new HashSet<String>();
+   //put all friends into the set
+   for(String val: getUserName(myName)){
+      for(String val2:getUserName(val)){
+          friends.add(val2);
+      }
+   }
+   // remove myself
+   friends.remove(myName);
+   
+   HashMap<String,Integer> courseCount = new HashMap<String,Integer>();
+   
+   //get the course of friends
+   for(String friend: friends){
+      for(String course: getCourse(friend)){
+         if(courseCount.containsKey(course)){
+              courseCount.put(course,courseCount.get(course)+1);
+         }else{
+             courseCount.put(course,1);
+         }
+      }
+   }
+   
+   PriorityQueue<Map.Entry<String,Integer>> pq = new PriorityQueue<Map.Entry<String,Integer>>(courseCount.size(),new PQsort());
+   // put the Entry Object into the PriorityQueue
+   for(Map.Entry<String,Integer> entry:courseCount.entrySet()){
+      pq.offer(entry);
+   }
+   while(!pq.isEmpty()){
+     Map.Entry<String,Integer> curr = pq.poll();
+     System.out.println(curr.getValue() +" " + curr.getKey());
+   }
+}
