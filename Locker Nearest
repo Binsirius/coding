@@ -1,0 +1,36 @@
+import java.io.*;
+import java.util.*;
+
+public static void nearDistance(int[][] grid){
+   if(grid==null||grid.length==0){
+      return;
+   }
+   // m*n grid
+   int m = grid.length;
+   int n = grid[0].length;
+   
+   int[][] room = new int[m][n];
+   for(int i=0;i<m;i++){
+      Arrays.fill(room[i],Integer.MAX_VALUE);
+   }
+   
+   for(int i=0;i<m;i++){
+     for(int j=0;j<n;j++){
+       if(grid[i][j]==0){
+          dfs(room,i,j,0);
+       }
+     }
+   }
+}
+
+public static void dfs(int[][] room,int i,int j,int distance){
+    if(i<0||i>room.length-1||j<0||j>room[0].length-1||room[i][j]<distance){
+         return;
+    }
+    room[i][j]=distance;
+    //
+    dfs(room,i-1,j,distance+1);
+    dfs(room,i,j-1,distance+1);
+    dfs(room,i+1,j,distance+1);
+    dfs(room,i,j+1,distance+1);
+}
